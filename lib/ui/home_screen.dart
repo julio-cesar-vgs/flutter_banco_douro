@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_banco_douro/ui/styles/colors.dart';
+import 'package:flutter_banco_douro/ui/widgets/account_widgets.dart';
+
+import '../models/account.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -17,10 +20,16 @@ class HomeScreen extends StatelessWidget {
           },
         ),
       ),
-      body: const Center(
-        child: Text(
-          "Bem-vindo ao Banco Douro!",
-          style: TextStyle(fontSize: 24),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: AccountWidgets(
+          account: Account(
+            id: "1",
+            name: "Julio",
+            lastName: "Cesar",
+            balance: 1000,
+            accountType: "Corrente",
+          ),
         ),
       ),
     );
