@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_banco_douro/ui/styles/colors.dart';
-import 'package:flutter_banco_douro/ui/widgets/account_widgets.dart';
 
-import '../models/account.dart';
+import 'package:flutter_banco_douro/exercises/book_exercise.dart';
+import 'package:flutter_banco_douro/exercises/person_exercise.dart';
+import 'package:flutter_banco_douro/exercises/social_post_exercise.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,16 +21,16 @@ class HomeScreen extends StatelessWidget {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: AccountWidgets(
-          account: Account(
-            id: "1",
-            name: "Julio",
-            lastName: "Cesar",
-            balance: 1000,
-            accountType: "Corrente",
-          ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            BookWidget(book: Book.getExample()),
+            PersonWidget(person: Person.getExample()),
+            SocialPostWidget(post: SocialPost.getExampleWithoutImage()),
+            SocialPostWidget(post: SocialPost.getExampleWithImage()),
+          ],
         ),
       ),
     );

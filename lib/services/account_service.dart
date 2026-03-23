@@ -36,13 +36,16 @@ class AccountService {
     return listAccounts;
   }
 
-  addAccount(Account account) async {
+  Future<void> addAccount(Account account) async {
     List<Account> listAccounts = await getAll();
     listAccounts.add(account);
     await save(listAccounts, accountName: account.name);
   }
 
-  save(List<Account> listAccounts, {String accountName = ""}) async {
+  Future<void> save(
+    List<Account> listAccounts, {
+    String accountName = "",
+  }) async {
     List<Map<String, dynamic>> listContent = [];
     for (Account account in listAccounts) {
       listContent.add(account.toMap());

@@ -53,13 +53,13 @@ class TransactionService {
     senderAccount.balance -= (amount + taxes);
     receiverAccount.balance += amount;
 
-    listAccounts[listAccounts.indexWhere(
-      (acc) => acc.id == senderAccount.id,
-    )] = senderAccount;
+    listAccounts[listAccounts.indexWhere((acc) => acc.id == senderAccount.id)] =
+        senderAccount;
 
     listAccounts[listAccounts.indexWhere(
-      (acc) => acc.id == receiverAccount.id,
-    )] = receiverAccount;
+          (acc) => acc.id == receiverAccount.id,
+        )] =
+        receiverAccount;
 
     Transaction transaction = Transaction(
       id: (Random().nextInt(89999) + 10000).toString(),
@@ -78,8 +78,9 @@ class TransactionService {
     Response response = await get(Uri.parse(url));
 
     Map<String, dynamic> mapResponse = json.decode(response.body);
-    List<dynamic> listDynamic =
-        json.decode(mapResponse["files"]["transactions.json"]["content"]);
+    List<dynamic> listDynamic = json.decode(
+      mapResponse["files"]["transactions.json"]["content"],
+    );
 
     List<Transaction> listTransactions = [];
 
@@ -92,13 +93,13 @@ class TransactionService {
     return listTransactions;
   }
 
-  addTransaction(Transaction trans) async {
+  Future<void> addTransaction(Transaction trans) async {
     List<Transaction> listTransactions = await getAll();
     listTransactions.add(trans);
     save(listTransactions);
   }
 
-  save(List<Transaction> listTransactions) async {
+  Future<void> save(List<Transaction> listTransactions) async {
     List<Map<String, dynamic>> listMaps = [];
 
     for (Transaction trans in listTransactions) {
@@ -109,15 +110,13 @@ class TransactionService {
 
     await post(
       Uri.parse(url),
-      headers: {
-        "Authorization": "Bearer $githubApiKey",
-      },
+      headers: {"Authorization": "Bearer $githubApiKey"},
       body: json.encode({
         "description": "accounts.json",
         "public": true,
         "files": {
-          "transactions.json": {"content": content}
-        }
+          "transactions.json": {"content": content},
+        },
       }),
     );
   }
