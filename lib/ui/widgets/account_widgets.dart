@@ -9,9 +9,11 @@ class AccountWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 128,
       padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         color: AppColor.lightOrange,
       ),
       child: Row(
