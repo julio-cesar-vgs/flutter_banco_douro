@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_banco_douro/services/account_service.dart';
 import 'package:flutter_banco_douro/ui/styles/colors.dart';
 
 import 'package:flutter_banco_douro/exercises/book_exercise.dart';
@@ -21,16 +22,22 @@ class HomeScreen extends StatelessWidget {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            BookWidget(book: Book.getExample()),
-            PersonWidget(person: Person.getExample()),
-            SocialPostWidget(post: SocialPost.getExampleWithoutImage()),
-            SocialPostWidget(post: SocialPost.getExampleWithImage()),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: FutureBuilder(
+          future: AccountService().getAll(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return const Center(child: CircularProgressIndicator());
+              case ConnectionState.waiting:
+                return const Center(child: CircularProgressIndicator());
+              case ConnectionState.active:
+                return const Center(child: CircularProgressIndicator());
+              case ConnectionState.done:
+                return const Text("A operação acabou");
+            }
+          },
         ),
       ),
     );
