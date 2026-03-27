@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_banco_douro/models/account.dart';
 import 'package:flutter_banco_douro/services/account_service.dart';
-import 'package:flutter_banco_douro/ui/styles/colors.dart';
-import 'package:flutter_banco_douro/ui/widgets/account_widgets.dart';
+import 'package:flutter_banco_douro/ui/widgets/account_widget.dart';
+import 'package:flutter_banco_douro/ui/widgets/add_account_modal.dart';
+import 'styles/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,17 +13,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Account>> futureAccounts;
-
-  @override
-  void initState() {
-    super.initState();
-    futureAccounts = AccountService().getAll();
-  }
+  Future<List<Account>> _futureGetAll = AccountService().getAll();
 
   Future<void> refreshGetAll() async {
     setState(() {
-      futureAccounts = AccountService().getAll();
+      _futureGetAll = AccountService().getAll();
     });
   }
 
@@ -30,13 +25,31 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColor.lightGrey,
         title: const Text("Sistema de gestão de contas"),
-        backgroundColor: AppColor.secondaryColor,
-        leading: IconButton(
-          icon: const Icon(Icons.logout),
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, "login");
-          },
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, "login");
+            },
+            icon: const Icon(Icons.logout),
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return const AddAccountModal();
+            },
+          );
+        },
+        backgroundColor: AppColor.orange,
+        child: const Icon(
+          Icons.add,
+          color: Colors.black,
         ),
       ),
       body: Padding(
@@ -44,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: RefreshIndicator(
           onRefresh: refreshGetAll,
           child: FutureBuilder(
-            future: futureAccounts,
+            future: _futureGetAll,
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
@@ -57,15 +70,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   {
                     if (snapshot.data == null || snapshot.data!.isEmpty) {
                       return const Center(
-                        child: Text("Nenhuma conta recebida."),
-                      );
+                          child: Text("Nenhuma conta recebida."));
                     } else {
                       List<Account> listAccounts = snapshot.data!;
                       return ListView.builder(
                         itemCount: listAccounts.length,
                         itemBuilder: (context, index) {
                           Account account = listAccounts[index];
-                          return AccountWidgets(account: account);
+                          return AccountWidget(account: account);
                         },
                       );
                     }

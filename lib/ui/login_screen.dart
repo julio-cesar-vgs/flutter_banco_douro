@@ -20,7 +20,10 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const SizedBox(height: 128),
-                Image.asset("assets/images/logo.png", width: 120),
+                Image.asset(
+                  "assets/images/logo.png",
+                  width: 120,
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -28,16 +31,22 @@ class LoginScreen extends StatelessWidget {
                     const Text(
                       "Sistema de Gestão de Contas",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 32),
+                      style: TextStyle(
+                        fontSize: 32,
+                      ),
                     ),
                     const SizedBox(height: 32),
                     TextFormField(
-                      decoration: const InputDecoration(label: Text("E-mail")),
+                      decoration: const InputDecoration(
+                        label: Text("E-mail"),
+                      ),
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       obscureText: true,
-                      decoration: const InputDecoration(label: Text("Senha")),
+                      decoration: const InputDecoration(
+                        label: Text("Senha"),
+                      ),
                     ),
                     const SizedBox(height: 32),
                     ElevatedButton(
@@ -46,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                       },
                       style: const ButtonStyle(
                         backgroundColor: WidgetStatePropertyAll(
-                          AppColor.primaryColor,
+                          AppColor.orange,
                         ),
                       ),
                       child: const Text(
